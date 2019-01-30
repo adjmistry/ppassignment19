@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+  body {
+    font-family: "Lato", sans-serif;
+  }
+  .sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+
+  .sidebar a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+
+  .sidebar a:hover {
+    color: #f1f1f1;
+  }
+
+  .sidebar .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
+
+  .openbtn:hover {
+    background-color: #444;
+  }
+
+  #main {
+    transition: margin-left .5s;
+    padding: 16px;
+  }
+
+  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .sidebar {padding-top: 15px;}
+    .sidebar a {font-size: 18px;}
+  }
+</style>
+</head>
+<body>
+
+    <div class="jumbotron" id="jumbotron">
+      <div class="row">
+        <div class="col-lg-4">
+          <button id="menuBut" class="openbtn" onclick="openOrClose()">☰ Menu</button>
+        </div>
+        <div class="col-lg-8">
+          <h1>Space Tours</h1>
+        </div>
+      </div>
+    </div>
+<div class="container-fluid">
+<input id=myHiddenField type="hidden" name="myHiddenField" value=0 />
+<div id="mySidebar" class="sidebar">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
+  <a href="/home">Home</a>
+  <a href="/tours">Tours</a>
+  <a href="/login">Login</a>
+  <a href="/register">Register</a>
+  <a href="/logout">Logout</a>
+</div>
+
+<form id="hiddenForm" method='get' action='/tours'>
+  <div class="form-group">
+      <div class="col-sm-10">
+      <input type="hidden" class="form-control" id="thisMonth" name="thisMonth">
+  </div>
+      </div>
+  <div class="form-group">
+      <div class="col-sm-10"> 
+      <input type="hidden" class="form-control" name="thisYear" id ="thisYear">
+  </div>
+</form>
+
+<div id="main">
+
+  <h2 id="title">Admin Tours</h2>
+  <div class="row">
+    <h3>
+    <div class="text-right col-sm-1" id="prevMonth"><</div>
+    <div class="text-center col-sm-1" id="month"><%= theMonth %></div>
+    <div class="text-left col-sm-1" id="nextMonth">></div>
+    <div class="text-right col-sm-1" id="prevYear"><</div>
+    <div class="text-center col-sm-1" id="year"><%= theYear %></div>
+    <div class="text-left col-sm-1" id="nextYear">></div>
+  </h3>
+  </div>
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Day</th>
+        <th>Capacity</th>
+        <th>Bookings</th>
+        <th>Users</th>
+      </tr>
+    </thead>
+      <% for(var i=0; i < tour.length; i++) { %>
+         <tr>
+           <td><%= tour[i].id %></td>
+           <td><%= tour[i].day %></td>
+           <td><%= tour[i].capacity %></td>
+           <td><%= tour[i].bookings %></td>
+           <td><%= tour[i].users %></td>
+           <td><a onclick="deleteTour(this.innerHTML)">Delete tour <%= tour[i].id %></a></td>
+         </tr>
+      <% } %>
+      </table>
+</div>
+<form  method='post' action='/newTour'>
+    <div class="form-group row">
+            <label class="control-label col-sm-2" for="newDay">Day:</label>
+            <div class="col-sm-2"> 
+            <input type="text" class="form-control" name="newDay" id="newDay">
+        </div>
+      </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="newMonth">Month:</label>
+        <div class="col-sm-2">
+        <input type="text" class="form-control" id="newMonth" name="newMonth">
+    </div>
+        </div>
+    <div class="form-group row">
+        <label class="control-label col-sm-2" for="newYear">Year:</label>
+        <div class="col-sm-2"> 
+        <input type="text" class="form-control" name="newYear" id="newYear">
+    </div>
+  </div>
+  <div class="form-group row">
+        <label class="control-label col-sm-2" for="newCap">Capacity:</label>
+        <div class="col-sm-2"> 
+        <input type="text" class="form-control" name="newCap" id="newCap">
+    </div>
+  </div>
+    <div class="form-group row"> 
+        <div class="col-sm-offset-2 col-sm-2">
+        <button id="submitter" class="btn btn-primary" type="submit">Add new tour</button>
+        </div>             
+    </div>
+</form>
+<div>
+  <h3><%= bookMsg %></h3>
+</div>
+<form id="hiddenForm1" method='post' action='/deleteTour'>
+  <div class="form-group">
+      <div class="col-sm-10">
+      <input type="hidden" class="form-control" id="tourNo" name="tourNo">
+  </div>
+      </div>
+  <div class="form-group">
+      <div class="col-sm-10"> 
+      <input type="hidden" class="form-control" name="hidMonth" id ="hidMonth">
+  </div>
+  </div>
+  <div class="form-group">
+      <div class="col-sm-10"> 
+      <input type="hidden" class="form-control" name="hidYear" id ="hidYear">
+  </div>
+  </div>
+</form>
+
+
+<script>
+function deleteTour(cellVal){
+  cellVal = cellVal.match(/\d+/g).map(Number);
+  var tourNo = parseInt(cellVal, 10);
+  document.getElementById("tourNo").value = tourNo;
+  document.getElementById("hidMonth").value = document.getElementById("month").innerHTML;
+  document.getElementById("hidYear").value = document.getElementById("year").innerHTML;
+  document.getElementById("hiddenForm1").submit();
+}
+
+function openNav() {
+  document.getElementById("menuBut").style.display = "none";
+  document.getElementById("myHiddenField").value = 1;
+  document.getElementById("mySidebar").style.width = "250px";
+  document.getElementById("jumbotron").style.marginLeft = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
+}
+
+function openOrClose() {
+  if (document.getElementById("myHiddenField").value == 0){
+    openNav();
+  }
+  else{
+    closeNav();
+  }
+}
+
+function closeNav() {
+  document.getElementById("myHiddenField").value = 0;
+  document.getElementById("jumbotron").style.marginLeft = "0";
+  document.getElementById("mySidebar").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
+  document.getElementById("menuBut").style.display = "block";
+}
+
+var months = ["January", "February", "March", "April", "May", "June", "July", 
+"August", "September", "October", "November", "December"];
+
+window.addEventListener("DOMContentLoaded", function () {
+  var form = document.getElementById("hiddenForm");
+  document.getElementById("prevMonth").addEventListener("click", function () {
+    prevMonth();
+    document.getElementById("thisMonth").value = document.getElementById("month").innerHTML;
+    document.getElementById("thisYear").value = document.getElementById("year").innerHTML;
+    form.submit();
+  });
+  document.getElementById("nextMonth").addEventListener("click", function () {
+    nextMonth();
+    document.getElementById("thisMonth").value = document.getElementById("month").innerHTML;
+    document.getElementById("thisYear").value = document.getElementById("year").innerHTML;
+    form.submit();
+  });
+  document.getElementById("prevYear").addEventListener("click", function () {
+    prevYear();
+    document.getElementById("thisMonth").value = document.getElementById("month").innerHTML;
+    document.getElementById("thisYear").value = document.getElementById("year").innerHTML;
+    form.submit();
+  });
+  document.getElementById("nextYear").addEventListener("click", function () {
+    nextYear();
+    document.getElementById("thisMonth").value = document.getElementById("month").innerHTML;
+    document.getElementById("thisYear").value = document.getElementById("year").innerHTML;
+    form.submit();
+  });
+});
+
+function sendDate(){
+  var month = document.getElementById("month").innerHTML;
+  var year = document.getElementById("year").innerHTML;
+  var xhttp = new XMLHttpRequest();
+  //document.getElementById("title").innerHTML = "/tours?month="+month+"&year="+year;
+
+  xhttp.open("post", "/tours?month="+month+"&year="+year, true);
+  //xhttp.open("get", "/tours", true);
+  xhttp.send();
+}
+
+function prevMonth(){
+  var monthVal = months.indexOf(document.getElementById("month").innerHTML);
+  if (monthVal !== 0){
+    monthVal += -1;
+  }
+  else {
+    monthVal = 11;
+    prevYear();
+  }
+  document.getElementById("month").innerHTML = months[monthVal];
+  //sendDate();
+}
+
+function nextMonth(){
+  var monthVal = months.indexOf(document.getElementById("month").innerHTML);
+  if (monthVal !== 11){
+    monthVal += 1;
+  }
+  else {
+    monthVal = 0;
+    nextYear();
+  }
+  document.getElementById("month").innerHTML = months[monthVal];
+  //sendDate();
+}
+
+function nextYear(){
+  var yearVal = parseInt(document.getElementById("year").innerHTML, 10);
+  yearVal += 1;
+  document.getElementById("year").innerHTML = yearVal;
+  sendDate();
+}
+
+function prevYear(){
+  var yearVal = parseInt(document.getElementById("year").innerHTML, 10);
+  yearVal += -1;
+  document.getElementById("year").innerHTML = yearVal;
+  sendDate();
+}
+</script>
+
+</body>
+</div>
+</html>

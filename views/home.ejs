@@ -1,0 +1,106 @@
+<!-- views/index.ejs -->
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+    
+    <form  method='post' action='/people'>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="username">Username:</label>
+            <div class="col-sm-10">
+            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" id="username">
+        </div>
+            </div>
+            <div class="row col-sm-offset-2 col-sm-10"><%= userMsg %></div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="fname">First name:</label>
+            <div class="col-sm-10"> 
+            <input type="text" class="form-control" name="fname" placeholder="Enter first name" >
+        </div>
+        <div class="row col-sm-offset-2 col-sm-10"><%= fNameMsg %></div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="lname">Last name:</label>
+            <div class="col-sm-10"> 
+            <input type="text" class="form-control" name="lname" placeholder="Enter last name" >
+        </div>
+        <div class="row col-sm-offset-2 col-sm-10"><%= sNameMsg %></div>
+        <div class="form-group">
+                <label class="control-label col-sm-2" for="atoken">Access token:</label>
+                <div class="col-sm-10"> 
+                <input type="text" class="form-control" name="access_token" value="concertina" >
+            </div>
+        
+        <div class="form-group"> 
+            <div class="col-sm-offset-2 col-sm-10">
+            <button id="submitter" class="btn btn-primary" type="submit">Submit form</button>
+            </div>
+        </div>
+    </form>
+
+    
+    <script>
+        /*
+        function submitForm(){
+        var req = new XMLHttpRequest();
+        var url = '/login';
+
+        req.open('post',url,true); // set this to POST if you would like
+        req.addEventListener('load',onLoad);
+        req.addEventListener('error',onError);
+        req.body.username = document.getElementById("username").value;
+        req.send();
+
+        function onLoad() {
+            console.log("Heard POST request");
+        var response = this.responseText;
+        var parsedResponse = JSON.parse(response);
+
+        // access your data newly received data here and update your DOM with appendChild(), findElementById(), etc...
+        var messageToDisplay = parsedResponse['message'];
+        document.getElementById("submitter").innerHTML = messageToDisplay;
+        // append child (with text value of messageToDisplay for instance) here or do some more stuff
+        }
+
+        function onError() {
+        // handle error here, print message perhaps
+        console.log('error receiving async AJAX call');
+        }
+    }
+        /*
+        (function() {
+        'use strict';
+        //window.userCheck = null;
+        window.addEventListener('load', function() {
+          // Fetch all the forms we want to apply custom Bootstrap validation styles to
+          var forms = document.getElementsByClassName('needs-validation');
+          // Loop over them and prevent submission
+          var validation = Array.prototype.filter.call(forms, function(form) {
+            form.addEventListener('submit', function(event) {
+              //if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              //}
+              form.classList.add('was-validated');
+            }, false);
+          });
+        }, false);
+        })();
+        
+        function submitData(){
+            document.getElementById("submitter").innerHTML = "Submitted";
+        }
+        */
+    </script>
+
+</body>
+</html>
